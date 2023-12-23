@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Electricity Bill Calculator</string>
+    <string name="date">Date</string>
+    <string name="name">Name</string>
+    <string name="number">ID Number</string>
+    <string name="previous">Previous</string>
+    <string name="current">Current</string>
+    <string name="unit">Unit</string>
+    <string name="amount">Amount</string>
+    <string name="rate">Rate</string>
+    <string name="blank">""</string>
+    <string name="reading">"Reading"</string>
+    <string name="update">"Update"</string>
+
+
+</resources>
