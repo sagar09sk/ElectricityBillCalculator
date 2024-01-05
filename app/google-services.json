@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "923799767968",
+    "project_id": "electricity-bill-calcula-dfed0",
+    "storage_bucket": "electricity-bill-calcula-dfed0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923799767968:android:f3f4c69539f5744ce932c5",
+        "android_client_info": {
+          "package_name": "com.example.electricitybillcalculator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMOLTiADOWppFN3Tb9tsx5pMQsWJwYbE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
