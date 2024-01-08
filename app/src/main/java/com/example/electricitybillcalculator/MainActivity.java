@@ -1,10 +1,14 @@
 package com.example.electricitybillcalculator;
 
+import static android.content.ContentValues.TAG;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,33 +17,53 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button buttonSign ,buttonLog ,getTotalBillButton, billshistoryButton;
+    Button getTotalBillButton;
     LinearLayout linearLayout;
     FirebaseAuth firebaseAuth;
+    FirebaseFirestore firebaseFirestore;
+    RecyclerView recyclerView;
+    ArrayList<String> profileNameList, dateList, amountList;
+    ImageButton createProfileButton;
+    String currentdate;
 
+    ConstraintLayout constraintLayout;
 
-
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            LocalDate todayDate = LocalDate.now();
+            currentdate = todayDate.toString();
+        }
+
+
         //if user is login
         firebaseAuth = FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser() != null ){
-
-            // if user is not verified
+            //if user is not verify
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if(!user.isEmailVerified()){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -56,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
                                 finish();
                             }
                         });
-
                     }
                 });
                 builder.setNegativeButton(" OK ", new DialogInterface.OnClickListener() {
@@ -70,90 +93,85 @@ public class MainActivity extends AppCompatActivity {
                 builder.create().show();
             }
 
+            String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            firebaseFirestore = FirebaseFirestore.getInstance();
+            profileNameList = new ArrayList<>();
+            dateList = new ArrayList<>();
+            amountList = new ArrayList<>();
+
+
+            //get and set all last bills to View
+            recyclerView = findViewById(R.id.recyclerView);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            CustomAdapterForLastBill customAdapterForLastBill = new CustomAdapterForLastBill(this,profileNameList,dateList,amountList);
+            firebaseFirestore.collection("Profiles of "+userID).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        amountList.add(""+document.getString("Amount"));
+                        profileNameList.add(""+document.getString("Profile Name"));
+                        dateList.add(""+document.getString("Date"));
+                        customAdapterForLastBill.notifyDataSetChanged();
+                    }
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            });
+            recyclerView.setAdapter(customAdapterForLastBill);
+
+
             linearLayout = findViewById(R.id.linearLayout);
             linearLayout.setVisibility(View.VISIBLE);
-            billshistoryButton = findViewById(R.id.billshistoryButton);
-            billshistoryButton.setVisibility(View.VISIBLE);
+
+
             //get total bill Amount
-            TextView totalBillTextView = findViewById(R.id.totalBillTextView);
             getTotalBillButton = findViewById(R.id.getTotalBillButton);
             getTotalBillButton.setVisibility(View.VISIBLE);
             getTotalBillButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String totalAmountText = getTotalAmount();
-                    totalBillTextView.setText("Rs "+totalAmountText);
-                    getTotalBillButton.setText("Update");
 
                 }
             });
 
+            // create profile
+            createProfileButton = findViewById(R.id.createProfileButton);
+            createProfileButton.setOnClickListener(view -> {
+                EditText editTextCreate = new EditText(view.getContext());
+                AlertDialog.Builder createDialog = new AlertDialog.Builder(view.getContext());
+                createDialog.setTitle(" Enter Profile Name ");
+                createDialog.setMessage(" profile Name must be Unique ");
+                createDialog.setView(editTextCreate);
+                createDialog.setPositiveButton(" Create ", (dialogInterface, i) -> {
+                    String createName = editTextCreate.getText().toString();
+                    FireBaseFireStoreHelper fireBaseFireStoreHelper = new FireBaseFireStoreHelper();
+                    fireBaseFireStoreHelper.createProfileInFirebase(MainActivity.this,createName,currentdate);
+                    startActivity(new Intent(MainActivity.this,MainActivity.class));
+                });
+                createDialog.setNegativeButton("Cancel",(dialogInterface, i) -> {
+
+                });
+            createDialog.create().show();
+            });
+
+
         }
+
         // if user is not login
         else{
-
-            buttonLog = findViewById(R.id.buttonLog);
-            buttonLog.setVisibility(View.VISIBLE);
-            buttonLog.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(MainActivity.this,LoginActivity.class) );
-                }
-            });
-
-            buttonSign = findViewById(R.id.buttonSign);
-            buttonSign.setVisibility(View.VISIBLE);
-            buttonSign.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(MainActivity.this,SigninActivity.class) );
-                }
-            });
-
+            constraintLayout = findViewById(R.id.constraintLayout);
+            constraintLayout.setVisibility(View.VISIBLE);
         }
 
-
     }
 
-
-
-    public void generateBill(View view){
-        Intent intent = new Intent(MainActivity.this, BillGenerateActivity.class);
+    public void LoginButtonClick(View view){
+        Intent intent = new Intent( MainActivity.this,LoginActivity.class);
         startActivity(intent);
     }
-
-    public void createProfile(View view){
-        Intent intent = new Intent(MainActivity.this, CreateProfileActivity.class);
+    public void SignInButtonClick(View view){
+        Intent intent = new Intent( MainActivity.this,LoginActivity.class);
         startActivity(intent);
     }
-
-    public void ShowAllLastBills(View view){
-        Intent intent = new Intent(MainActivity.this, AllBillActivity.class);
-        startActivity(intent);
-    }
-
-    public void showBillHistoryByProfile(View view){
-        Intent intent = new Intent( MainActivity.this , ProfilenameActivity.class);
-        startActivity(intent);
-    }
-
-    String getTotalAmount(){
-        int totalAmount = 0;
-        BillData billData = new BillData(this);
-        Cursor cursor = billData.readAmountFromBillTable();
-        if(cursor.getCount() ==  0){
-            Toast.makeText(this, "No Data found", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            while(cursor.moveToNext()){
-                String a = (cursor.getString(0));
-                int x = Integer.parseInt(a);
-                totalAmount = totalAmount + x ;
-            }
-        }
-        return String.valueOf(totalAmount);
-    }
-
 
 }
 

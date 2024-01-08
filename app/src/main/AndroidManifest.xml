@@ -24,9 +24,6 @@
             android:name=".ProfilenameActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateProfileActivity"
-            android:exported="false" />
-        <activity
             android:name=".BillGenerateActivity"
             android:exported="false" />
         <activity
