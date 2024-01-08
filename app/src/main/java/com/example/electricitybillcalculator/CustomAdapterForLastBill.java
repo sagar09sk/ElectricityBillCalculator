@@ -71,8 +71,6 @@ public class CustomAdapterForLastBill extends RecyclerView.Adapter<CustomAdapter
             }
         });
 
-
-
     }
 
     @Override

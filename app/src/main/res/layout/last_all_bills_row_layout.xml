@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView"
+                android:text="Name"
                 android:textSize="20sp" />
 
             <TextView
@@ -32,14 +32,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="TextView" />
+                android:text="Date" />
 
             <TextView
                 android:id="@+id/textViewAmount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.2"
-                android:text="TextView"
+                android:text="Amount"
                 android:textSize="16sp" />
         </LinearLayout>
 

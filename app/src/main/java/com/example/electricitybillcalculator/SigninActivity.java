@@ -1,8 +1,6 @@
 package com.example.electricitybillcalculator;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,12 +10,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -44,12 +36,9 @@ public class SigninActivity extends AppCompatActivity {
 
         //for already have account
         HaveAccount = findViewById(R.id.HaveAccount);
-        HaveAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
-                finish();
-            }
+        HaveAccount.setOnClickListener(view -> {
+            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+            finish();
         });
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -59,57 +48,46 @@ public class SigninActivity extends AppCompatActivity {
             finish();
         }
 
-        buttonSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = editTextTextEmailAddress.getText().toString().trim();
-                String password = editTextTextPassword.getText().toString().trim();
-                String passwordConfirm = editTextTextPasswordConfirm.getText().toString().trim();
+        buttonSignIn.setOnClickListener(view -> {
+            String email = editTextTextEmailAddress.getText().toString().trim();
+            String password = editTextTextPassword.getText().toString().trim();
+            String passwordConfirm = editTextTextPasswordConfirm.getText().toString().trim();
 
-                if(TextUtils.isEmpty(email)){
-                    editTextTextEmailAddress.setError(" Email is Required. ");
-                    return;
-                }
-                if(TextUtils.isEmpty(password)){
-                    editTextTextPassword.setError(" Password is Required. ");
-                    return;
-                }
-                if(password.length() < 6){
-                    editTextTextPassword.setError("Password is must be more than 6 Characters");
-                    return;
-                }
-                if(!password.equals(passwordConfirm)){
-                    editTextTextPasswordConfirm.setError("Confirm Password is Not Same");
-                    return;
-                }
-                progressBar.setVisibility(View.INVISIBLE);
-
-                //create account function
-                firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(SigninActivity.this, "Account Successfully Created", Toast.LENGTH_SHORT).show();
-
-                            //send verification email
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Toast.makeText(SigninActivity.this, "Verification Email has been sent. ", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                            finish();
-                        }else{
-                            Toast.makeText(SigninActivity.this, "Error ! "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
-
+            if(TextUtils.isEmpty(email)){
+                editTextTextEmailAddress.setError(" Email is Required. ");
+                return;
             }
+            if(TextUtils.isEmpty(password)){
+                editTextTextPassword.setError(" Password is Required. ");
+                return;
+            }
+            if(password.length() < 6){
+                editTextTextPassword.setError("Password is must be more than 6 Characters");
+                return;
+            }
+            if(!password.equals(passwordConfirm)){
+                editTextTextPasswordConfirm.setError("Confirm Password is Not Same");
+                return;
+            }
+            progressBar.setVisibility(View.INVISIBLE);
+
+            //create account function
+            firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    Toast.makeText(SigninActivity.this, "Account Successfully Created", Toast.LENGTH_SHORT).show();
+
+                    //send verification email
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    user.sendEmailVerification().addOnSuccessListener(unused -> Toast.makeText(SigninActivity.this, "Verification Email has been sent. ", Toast.LENGTH_SHORT).show());
+
+                    startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                    finish();
+                }else{
+                    Toast.makeText(SigninActivity.this, "Error ! "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
         });
 
     }

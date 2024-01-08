@@ -79,6 +79,7 @@
                 android:layout_weight="1"
                 android:background="#0496FF"
                 android:contentDescription="show bill"
+                android:onClick="ProfileNameView"
                 android:padding="7dp"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/bill" />
