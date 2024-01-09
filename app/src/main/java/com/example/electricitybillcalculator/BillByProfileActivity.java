@@ -26,7 +26,7 @@ public class BillByProfileActivity extends AppCompatActivity {
     ArrayList<String> dateList,currentList,amountList;
     CustomAdapterForBillhistory customAdapterForBillhistory;
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "NotifyDataSetChanged"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +48,9 @@ public class BillByProfileActivity extends AppCompatActivity {
         firebaseFirestore.collection("Bills of "+ profileName +" of " +userID).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    amountList.add(""+document.getString("Amount"));
-                    currentList.add(""+document.getString("Current Reading"));
-                    dateList.add(""+document.getString("Date"));
+                    amountList.add(document.getString("Amount"));
+                    currentList.add(document.getString("Current Reading"));
+                    dateList.add(document.getString("Date"));
                     customAdapterForBillhistory.notifyDataSetChanged();
                 }
             } else {

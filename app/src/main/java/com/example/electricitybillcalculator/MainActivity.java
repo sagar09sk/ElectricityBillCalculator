@@ -88,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
             firebaseFirestore.collection("Profiles of "+userID).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        amountList.add(""+document.getString("Amount"));
-                        profileNameList.add(""+document.getString("Profile Name"));
-                        dateList.add(""+document.getString("Date"));
+                        amountList.add(document.getString("Amount"));
+                        profileNameList.add(document.getString("Profile Name"));
+                        dateList.add(document.getString("Date"));
                         customAdapterForLastBill.notifyDataSetChanged();
                     }
                 } else {

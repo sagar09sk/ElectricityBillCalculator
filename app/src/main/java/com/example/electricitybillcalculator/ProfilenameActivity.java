@@ -45,7 +45,7 @@ public class ProfilenameActivity extends AppCompatActivity {
         firebaseFirestore.collection("Profiles of "+userID).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 for(QueryDocumentSnapshot document: task.getResult()){
-                    nameList.add(""+document.getString("Profile Name"));
+                    nameList.add(document.getString("Profile Name"));
                     arrayAdapter.notifyDataSetChanged();
                 }
             }

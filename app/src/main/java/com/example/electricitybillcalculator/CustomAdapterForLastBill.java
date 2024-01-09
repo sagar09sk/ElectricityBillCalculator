@@ -41,7 +41,7 @@ public class CustomAdapterForLastBill extends RecyclerView.Adapter<CustomAdapter
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.textViewName.setText("ID : "+nameList.get(position));
-        holder.textViewDate.setText(""+dateList.get(position));
+        holder.textViewDate.setText(dateList.get(position));
         holder.textViewAmount.setText("Rs : "+amountList.get(position));
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
