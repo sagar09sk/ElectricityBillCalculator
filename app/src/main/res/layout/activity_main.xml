@@ -42,7 +42,7 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
@@ -86,14 +86,13 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/getTotalBillButton"
+        <TextView
+            android:id="@+id/textViewTotalAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="70dp"
-            android:text="Total amount "
-            app:cornerRadius="17dp" />
+            android:gravity="center"
+            android:padding="7dp"
+            android:text="Total Amount" />
 
     </LinearLayout>
 

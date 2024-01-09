@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -24,7 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class MainActivity extends AppCompatActivity {
-    Button getTotalBillButton;
+    TextView textViewTotalAmount;
     LinearLayout linearLayout;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton createProfileButton;
     String currentdate;
     ConstraintLayout constraintLayout;
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
             profileNameList = new ArrayList<>();
             dateList = new ArrayList<>();
             amountList = new ArrayList<>();
+            textViewTotalAmount = findViewById(R.id.textViewTotalAmount);
 
 
             //get and set all last bills to RecyclerView
@@ -94,20 +96,19 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.w(TAG, "Error getting documents.", task.getException());
                 }
+                //get total
+                int total = 0;
+                for(String i : amountList){
+                    int a = Integer.parseInt(i);
+                    total = total + a;
+                }
+                textViewTotalAmount.setText("Total Amount = " + total  +"Rs" );
             });
-            recyclerView.setAdapter(customAdapterForLastBill);
 
+            recyclerView.setAdapter(customAdapterForLastBill);
 
             linearLayout = findViewById(R.id.linearLayout);
             linearLayout.setVisibility(View.VISIBLE);
-
-
-            //get total bill Amount
-            getTotalBillButton = findViewById(R.id.getTotalBillButton);
-            getTotalBillButton.setVisibility(View.VISIBLE);
-            getTotalBillButton.setOnClickListener(view -> {
-
-            });
 
             // create profile
             createProfileButton = findViewById(R.id.createProfileButton);
