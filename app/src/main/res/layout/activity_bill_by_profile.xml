@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".BillByProfileActivity">
 
+    <TextView
+        android:id="@+id/textViewdetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        android:fontFamily="@font/aclonica"
+        android:text="Bill History of Name"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
@@ -23,13 +35,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
         android:layout_marginRight="20dp"
         android:orientation="horizontal"
         android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/textViewdetail">
 
         <TextView
             android:id="@+id/dateTextView4"

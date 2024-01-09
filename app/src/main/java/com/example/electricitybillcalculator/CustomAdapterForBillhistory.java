@@ -13,10 +13,10 @@ import java.util.ArrayList;
 
 public class CustomAdapterForBillhistory extends RecyclerView.Adapter<CustomAdapterForBillhistory.MyViewHolder>{
 
-    private Context context;
-    private ArrayList bill_date , bill_current, bill_amount;
+    private final Context context;
+    private final ArrayList<String> bill_date , bill_current, bill_amount;
 
-    CustomAdapterForBillhistory(Context context , ArrayList bill_date , ArrayList bill_current ,ArrayList bill_amount){
+    CustomAdapterForBillhistory(Context context , ArrayList<String> bill_date , ArrayList<String> bill_current ,ArrayList<String> bill_amount){
         this.context = context;
         this.bill_date = bill_date;
 
@@ -44,8 +44,8 @@ public class CustomAdapterForBillhistory extends RecyclerView.Adapter<CustomAdap
         return bill_date.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView dateinfoTextView,previousinfoTextView, currentinfoTextView , amountinfoTextView;
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView dateinfoTextView, currentinfoTextView , amountinfoTextView;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             dateinfoTextView = itemView.findViewById(R.id.dateinfoTextView);

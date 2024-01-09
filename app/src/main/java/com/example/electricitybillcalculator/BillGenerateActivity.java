@@ -18,7 +18,6 @@ import java.time.LocalDate;
 
 public class BillGenerateActivity extends AppCompatActivity {
 
-
     private TextView previousinfo;
     private EditText currentinfo;
     private TextView unitinfo;
@@ -52,15 +51,29 @@ public class BillGenerateActivity extends AppCompatActivity {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         String userID = firebaseAuth.getCurrentUser().getUid();
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseFirestore.collection("Bills of "+ name +" of " +userID).document("date " +date).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                DocumentSnapshot document = task.getResult();
-                if(document.exists()){
-                    previousinfo.setText(document.getString("Previous Reading"));
-                    previousReading = document.getString("Previous Reading");
+        // Edit bill
+        if(date.equals(currentDate)){
+            firebaseFirestore.collection("Bills of "+ name +" of " +userID).document("date " +date).get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if(document.exists()){
+                        previousinfo.setText(document.getString("Previous Reading"));
+                        previousReading = document.getString("Previous Reading");
+                    }
                 }
-            }
-        });
+            });
+        //new bill
+        }else{
+            firebaseFirestore.collection("Bills of "+ name +" of " +userID).document("date " +date).get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+                    if(document.exists()){
+                        previousinfo.setText(document.getString("Current Reading"));
+                        previousReading = document.getString("Current Reading");
+                    }
+                }
+            });
+        }
 
         TextView rateinfo = findViewById(R.id.rateinfo);
         rateinfo.setText("Rs 5 ");
@@ -88,11 +101,11 @@ public class BillGenerateActivity extends AppCompatActivity {
             amountinfo.setText("Rs " + amount);
 
             saveButton = findViewById(R.id.saveButton);
-           saveButton.setOnClickListener(view1 -> {
-               fireBaseFireStoreHelper.addBillInFirebase(this,name,currentDate,previousReading,currentReading,String.valueOf(amount));
-               fireBaseFireStoreHelper.updatebillInprofile(this,name,date, String.valueOf(amount));
-               startActivity(new Intent(BillGenerateActivity.this,MainActivity.class));
-               finish();
+            saveButton.setOnClickListener(view1 -> {
+                fireBaseFireStoreHelper.addBillInFirebase(this,name,currentDate,previousReading,currentReading,String.valueOf(amount));
+                fireBaseFireStoreHelper.updatebillInprofile(this,name,date, String.valueOf(amount));
+                startActivity(new Intent(BillGenerateActivity.this,MainActivity.class));
+                finish();
             });
         });
 

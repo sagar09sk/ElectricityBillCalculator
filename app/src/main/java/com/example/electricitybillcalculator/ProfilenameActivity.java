@@ -26,8 +26,6 @@ public class ProfilenameActivity extends AppCompatActivity {
     ListView profilenamelistView;
     FireBaseFireStoreHelper fireBaseFireStoreHelper;
 
-    public static final String nameIntent = "electricitybillcalculator.Profilename.name";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +40,7 @@ public class ProfilenameActivity extends AppCompatActivity {
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
         ArrayList<String> nameList = new ArrayList<>();
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this , android.R.layout.simple_list_item_1,nameList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this , android.R.layout.simple_list_item_single_choice,nameList);
 
         firebaseFirestore.collection("Profiles of "+userID).get().addOnCompleteListener(task -> {
             if(task.isSuccessful()){
@@ -58,7 +56,8 @@ public class ProfilenameActivity extends AppCompatActivity {
         profilenamelistView.setOnItemClickListener((adapterView, view, i, l) -> {
             String name = ((TextView) view).getText().toString();
             Intent intent = new Intent(ProfilenameActivity.this , BillByProfileActivity.class);
-            intent.putExtra(nameIntent, name);
+            intent.putExtra("name", name);
+            intent.putExtra("userID" , userID);
             startActivity(intent);
 
             //For long press delete function

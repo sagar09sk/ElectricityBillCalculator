@@ -1,13 +1,12 @@
 package com.example.electricitybillcalculator;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
@@ -17,10 +16,12 @@ import java.util.ArrayList;
 
 public class CustomAdapterForLastBill extends RecyclerView.Adapter<CustomAdapterForLastBill.MyViewHolder> {
 
-    private Context context;
-    private ArrayList nameList , dateList ,amountList ;
+    private final Context context;
+    private final ArrayList<String> nameList;
+    private final ArrayList<String> dateList;
+    private final ArrayList<String> amountList ;
 
-    CustomAdapterForLastBill(Context context , ArrayList nameList , ArrayList dateList , ArrayList amountList){
+    CustomAdapterForLastBill(Context context , ArrayList<String> nameList , ArrayList<String> dateList , ArrayList<String> amountList){
         this.context = context;
         this.nameList = nameList;
         this.dateList = dateList;
@@ -36,6 +37,7 @@ public class CustomAdapterForLastBill extends RecyclerView.Adapter<CustomAdapter
         return new MyViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.textViewName.setText("ID : "+nameList.get(position));
@@ -43,29 +45,23 @@ public class CustomAdapterForLastBill extends RecyclerView.Adapter<CustomAdapter
         holder.textViewAmount.setText("Rs : "+amountList.get(position));
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
-            String name = (String) nameList.get(position);
-            String date = (String) dateList.get(position);
-            String amount = (String) amountList.get(position);
+            final String name = (String) nameList.get(position);
+            final String date = (String) dateList.get(position);
+            final String amount = (String) amountList.get(position);
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle(" ID :  "+name);
                 builder.setMessage(" Date :  "+date+"\n Rs :  "+amount);
-                builder.setPositiveButton(" add new Bill ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(context,BillGenerateActivity.class);
-                        intent.putExtra("Name" ,name);
-                        intent.putExtra("Date",date);
-                        context.startActivity(intent);
-                    }
+                builder.setPositiveButton(" add new Bill ", (dialogInterface, i) -> {
+                    Intent intent = new Intent(context,BillGenerateActivity.class);
+                    intent.putExtra("Name" ,name);
+                    intent.putExtra("Date",date);
+                    context.startActivity(intent);
                 });
 
-                builder.setNeutralButton(" OK ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
+                builder.setNeutralButton(" OK ", (dialogInterface, i) -> {
+                // back
                 });
                 builder.create().show();
             }
@@ -78,7 +74,7 @@ public class CustomAdapterForLastBill extends RecyclerView.Adapter<CustomAdapter
         return nameList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
 
         TextView textViewName, textViewDate, textViewAmount;
         CardView cardView;
