@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,10 +62,9 @@ public class ProfilenameActivity extends AppCompatActivity {
             intent.putExtra("userID" , userID);
             startActivity(intent);
 
-            //For long press delete function
-            registerForContextMenu(profilenamelistView);
-
         });
+
+
 
     }
 
@@ -99,7 +100,8 @@ public class ProfilenameActivity extends AppCompatActivity {
 
         builder.setPositiveButton("Yes", (dialogInterface, i) -> {
             //delete operation
-
+            Toast.makeText(this, "delete "+
+                    "  ", Toast.LENGTH_SHORT).show();
         });
         builder.setNegativeButton("No", (dialogInterface, i) ->
                 Toast.makeText(ProfilenameActivity.this, "Canceled", Toast.LENGTH_SHORT).show()

@@ -2,6 +2,7 @@ package com.example.electricitybillcalculator;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ public class BillByProfileActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     TextView textViewdetail;
+    ImageView deleteView;
     ArrayList<String> dateList,currentList,amountList;
     CustomAdapterForBillhistory customAdapterForBillhistory;
 
@@ -38,14 +41,42 @@ public class BillByProfileActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         textViewdetail = findViewById(R.id.textViewdetail);
         textViewdetail.setText("Bill History of "+profileName.toUpperCase());
+        deleteView = findViewById(R.id.deleteView);
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
         dateList = new ArrayList<>();
         currentList = new ArrayList<>();
         amountList = new ArrayList<>();
 
+        deleteView.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Delete ?");
+            builder.setMessage("Are you sure you want delete ?");
+
+            builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                //delete operation
+                firebaseFirestore.collection("Profiles of "+userID ).document(profileName).delete().addOnSuccessListener(unused -> {
+                    Toast.makeText(this, "deletion is successful", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this,MainActivity.class) );
+                }).addOnFailureListener(e ->
+                        Toast.makeText(this, " failed " +e , Toast.LENGTH_SHORT).show()
+                );
+
+            });
+            builder.setNegativeButton("No", (dialogInterface, i) ->
+                    Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show()
+            );
+            builder.create().show();
+
+        });
+
+
+
         customAdapterForBillhistory = new CustomAdapterForBillhistory(BillByProfileActivity.this,dateList,currentList,amountList);
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseFirestore.collection("Bills of "+ profileName +" of " +userID).get().addOnCompleteListener(task -> {
+        firebaseFirestore
+                .collection("Profile Bills Data of " +userID)
+                .document("Bill Data")
+                .collection(profileName).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     amountList.add(document.getString("Amount"));
@@ -58,7 +89,6 @@ public class BillByProfileActivity extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(customAdapterForBillhistory);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(BillByProfileActivity.this));
 
     }

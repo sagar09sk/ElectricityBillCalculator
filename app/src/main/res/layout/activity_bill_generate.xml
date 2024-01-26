@@ -8,9 +8,9 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="70dp"
+        android:layout_width="266dp"
+        android:layout_height="588dp"
+        android:layout_margin="40dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,6 +29,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/name"
                 android:textSize="20sp" />
 
@@ -38,6 +40,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/blank"
                 android:textSize="20sp" />
 
@@ -55,6 +59,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/date"
                 android:textSize="20sp" />
 
@@ -64,6 +70,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/blank"
                 android:textSize="20sp" />
 
@@ -81,6 +89,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/previous"
                 android:textSize="20sp" />
 
@@ -90,6 +100,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/blank"
                 android:textSize="20sp" />
 
@@ -107,6 +119,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/rate"
                 android:textSize="20sp" />
 
@@ -116,6 +130,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/blank"
                 android:textSize="20sp" />
 
@@ -133,6 +149,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/current"
                 android:textSize="20sp" />
 
@@ -153,6 +171,7 @@
             android:layout_height="match_parent"
             android:layout_margin="7dp"
             android:layout_weight="1"
+            android:enabled="false"
             android:text="Calculate"
             app:cornerRadius="20dp" />
 
@@ -170,6 +189,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/unit"
                 android:textSize="20sp" />
 
@@ -179,6 +200,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/blank"
                 android:textSize="20sp" />
 
@@ -198,6 +221,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/amount"
                 android:textSize="20sp" />
 
@@ -207,6 +232,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/custom_edit_text"
+                android:padding="7dp"
                 android:text="@string/blank"
                 android:textSize="20sp" />
 

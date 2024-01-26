@@ -6,9 +6,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -114,13 +116,15 @@ public class MainActivity extends AppCompatActivity {
             createProfileButton = findViewById(R.id.createProfileButton);
             createProfileButton.setOnClickListener(view -> {
                 EditText editTextCreate = new EditText(view.getContext());
+                editTextCreate.setBackgroundResource(R.drawable.custom_edit_text);
+
                 AlertDialog.Builder createDialog = new AlertDialog.Builder(view.getContext());
                 createDialog.setTitle(" Enter Profile Name ");
                 createDialog.setMessage(" profile Name must be Unique ");
                 createDialog.setView(editTextCreate);
                 createDialog.setPositiveButton(" Create ", (dialogInterface, i) -> {
                     String createName = editTextCreate.getText().toString();
-                    fireBaseFireStoreHelper.createProfileInFirebase(MainActivity.this,createName,currentdate);
+                    fireBaseFireStoreHelper.createProfileInFirebaseNew(MainActivity.this,createName,currentdate);
                     startActivity(new Intent(MainActivity.this,MainActivity.class));
                 });
                 createDialog.setNegativeButton("Cancel",(dialogInterface, i) -> {
