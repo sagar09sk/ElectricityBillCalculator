@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,11 +38,14 @@ public class MainActivity extends AppCompatActivity {
     ImageButton createProfileButton;
     String currentdate;
     ConstraintLayout constraintLayout;
+
+
     @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             LocalDate todayDate = LocalDate.now();

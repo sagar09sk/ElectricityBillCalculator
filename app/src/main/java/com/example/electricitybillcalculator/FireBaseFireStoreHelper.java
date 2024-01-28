@@ -21,6 +21,7 @@ public class FireBaseFireStoreHelper {
         profile.put("Amount", "0");
         profile.put("Date" , date);
         profile.put("Current Reading","0");
+        profile.put("Previous Reading","0");
         ProfilesCollection.set(profile).addOnSuccessListener(unused ->
                 Toast.makeText(context, "Profile created", Toast.LENGTH_SHORT).show()
         ).addOnFailureListener(e ->
@@ -28,9 +29,8 @@ public class FireBaseFireStoreHelper {
         );
 
         DocumentReference billsCollection = firebaseFirestore
-                .collection("Profile Bills Data of " +userID)
-                .document("Bill Data")
-                .collection(profileName).document("date " +date);
+                .collection("Profiles of "+userID ).document(profileName)
+                .collection("Bill Data").document("date " +date);
         Map<String,Object> bill = new HashMap<>();
         bill.put("Previous Reading","0");
         bill.put("Current Reading","0");
@@ -46,9 +46,8 @@ public class FireBaseFireStoreHelper {
 
     public void addBillInFirebase(Context context,String profileName , String date ,String previousReading ,String currentReading,String amount){
         DocumentReference billsCollection = firebaseFirestore
-                .collection("Profile Bills Data of " +userID)
-                .document("Bill Data")
-                .collection(profileName).document("date " +date);
+                .collection("Profiles of "+userID ).document(profileName)
+                .collection("Bill Data").document("date " +date);
         Map<String,Object> bill = new HashMap<>();
         bill.put("Previous Reading",previousReading);
         bill.put("Current Reading",currentReading);
@@ -62,13 +61,15 @@ public class FireBaseFireStoreHelper {
     }
 
 
-    public void updateBillInProfiles(Context context,String profileName , String date ,String amount ,String current){
+    public void updateBillInProfiles(Context context,String profileName , String date ,String amount ,String current , String previous){
         DocumentReference ProfilesCollection = firebaseFirestore.collection("Profiles of "+userID ).document(profileName);
         Map<String,Object> profile = new HashMap<>();
         profile.put("Profile Name",profileName);
         profile.put("Amount", amount);
         profile.put("Date" , date);
         profile.put("Current Reading",current);
+        profile.put("Previous Reading",previous);
+
         ProfilesCollection.set(profile).addOnSuccessListener(unused ->
                 Toast.makeText(context, "bill updated", Toast.LENGTH_SHORT).show()
         ).addOnFailureListener(e ->

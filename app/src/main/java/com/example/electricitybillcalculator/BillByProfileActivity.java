@@ -73,10 +73,9 @@ public class BillByProfileActivity extends AppCompatActivity {
 
 
         customAdapterForBillhistory = new CustomAdapterForBillhistory(BillByProfileActivity.this,dateList,currentList,amountList);
-        firebaseFirestore
-                .collection("Profile Bills Data of " +userID)
-                .document("Bill Data")
-                .collection(profileName).get().addOnCompleteListener(task -> {
+        firebaseFirestore.collection("Profiles of "+userID ).document(profileName)
+                .collection("Bill Data")
+                .get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     amountList.add(document.getString("Amount"));

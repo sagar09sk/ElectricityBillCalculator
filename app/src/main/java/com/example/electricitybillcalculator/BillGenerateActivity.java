@@ -24,6 +24,7 @@ import java.time.LocalDate;
 public class BillGenerateActivity extends AppCompatActivity {
 
     private TextView previousinfo;
+    private TextView textViewHeading;
     private EditText currentinfo;
     private TextView unitinfo;
     private TextView amountinfo;
@@ -39,6 +40,7 @@ public class BillGenerateActivity extends AppCompatActivity {
         updateButton = findViewById(R.id.updateButton);
         TextView nameinfo = findViewById(R.id.nameinfo);
         previousinfo = findViewById(R.id.previousinfo);
+        textViewHeading = findViewById(R.id.textViewHeading);
 
 
         //for get current date
@@ -60,7 +62,8 @@ public class BillGenerateActivity extends AppCompatActivity {
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         // Edit bill
         if(date.equals(currentDate)){
-            firebaseFirestore.collection("Profile Bills Data of " +userID).document("Bill Data").collection(name).document("date " +date).get().addOnCompleteListener(task -> {
+            textViewHeading.setText(" Edit Today Bill ");
+            firebaseFirestore.collection("Profiles of "+userID ).document(name).get().addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
                     if(document.exists()){
@@ -71,6 +74,7 @@ public class BillGenerateActivity extends AppCompatActivity {
             });
         //new bill
         }else{
+            textViewHeading.setText(" Generate New Bill ");
             firebaseFirestore.collection("Profiles of "+userID ).document(name).get().addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     DocumentSnapshot document = task.getResult();
@@ -113,7 +117,7 @@ public class BillGenerateActivity extends AppCompatActivity {
             saveButton = findViewById(R.id.saveButton);
             saveButton.setOnClickListener(view1 -> {
                 fireBaseFireStoreHelper.addBillInFirebase(this,name,currentDate,previousReading,currentReading,String.valueOf(amount));
-                fireBaseFireStoreHelper.updateBillInProfiles(this,name,date, String.valueOf(amount),currentReading);
+                fireBaseFireStoreHelper.updateBillInProfiles(this,name,currentDate, String.valueOf(amount),currentReading,previousReading);
                 startActivity(new Intent(BillGenerateActivity.this,MainActivity.class));
                 finish();
             });
