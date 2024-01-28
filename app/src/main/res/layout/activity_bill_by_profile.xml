@@ -11,12 +11,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="7dp"
-        android:layout_marginTop="4dp"
         android:fontFamily="@font/aclonica"
         android:text="Bill History of Name"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/addNewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        android:background="@drawable/custom_add_bill_textview"
+        android:fontFamily="@font/aclonica"
+        android:padding="7dp"
+        android:text="Add New Bill"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewdetail" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -35,12 +49,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="7dp"
         android:layout_marginRight="20dp"
         android:orientation="horizontal"
-        android:padding="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewdetail">
+        app:layout_constraintTop_toBottomOf="@+id/addNewButton">
 
         <TextView
             android:id="@+id/dateTextView4"
@@ -48,7 +62,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Date" />
+            android:text="Date"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/currentTextView2"
@@ -56,7 +71,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Current \nReading"
+            android:text="@string/reading"
+            android:textSize="20sp"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -65,17 +81,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Amount" />
+            android:text="Amount"
+            android:textSize="20sp" />
 
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/deleteView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="4dp"
+        android:id="@+id/createProfileButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="9dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textViewdetail"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/delete_document" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

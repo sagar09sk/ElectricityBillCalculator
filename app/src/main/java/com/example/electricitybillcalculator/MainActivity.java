@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,28 +36,24 @@ public class MainActivity extends AppCompatActivity {
     FireBaseFireStoreHelper fireBaseFireStoreHelper;
     RecyclerView recyclerView;
     ArrayList<String> profileNameList, dateList, amountList;
-    ImageButton createProfileButton;
-    String currentdate;
-    ConstraintLayout constraintLayout;
-
-
+    ImageView createProfileButton;
+    String currentDate;
     @SuppressLint({"NotifyDataSetChanged", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            LocalDate todayDate = LocalDate.now();
-            currentdate = todayDate.toString();
-        }
-
-
-        //if user is login
+        LocalDate todayDate = LocalDate.now();
+        currentDate = todayDate.toString();
         firebaseAuth = FirebaseAuth.getInstance();
-        if(firebaseAuth.getCurrentUser() != null ){
 
+        // if user not login
+        if(firebaseAuth.getCurrentUser() == null ){
+            Intent intent = new Intent( MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+        }
+        //if user is login
+        if(firebaseAuth.getCurrentUser() != null ){
             //if user is not verify
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if(!user.isEmailVerified()){
@@ -76,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
                 builder.create().show();
             }
 
-
             //declare variables
             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
             firebaseFirestore = FirebaseFirestore.getInstance();
@@ -86,11 +82,10 @@ public class MainActivity extends AppCompatActivity {
             amountList = new ArrayList<>();
             textViewTotalAmount = findViewById(R.id.textViewTotalAmount);
 
-
             //get and set all last bills to RecyclerView
             recyclerView = findViewById(R.id.recyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            CustomAdapterForLastBill customAdapterForLastBill = new CustomAdapterForLastBill(this,profileNameList,dateList,amountList);
+            CustomAdapterForLastBill customAdapterForLastBill = new CustomAdapterForLastBill(this,userID,profileNameList,dateList,amountList);
             firebaseFirestore.collection("Profiles of "+userID).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
@@ -120,18 +115,16 @@ public class MainActivity extends AppCompatActivity {
             createProfileButton = findViewById(R.id.createProfileButton);
             createProfileButton.setOnClickListener(view -> {
                 EditText editTextCreate = new EditText(view.getContext());
-                editTextCreate.setBackgroundResource(R.drawable.custom_edit_text);
-
                 AlertDialog.Builder createDialog = new AlertDialog.Builder(view.getContext());
                 createDialog.setTitle(" Enter Profile Name ");
                 createDialog.setMessage(" profile Name must be Unique ");
                 createDialog.setView(editTextCreate);
                 createDialog.setPositiveButton(" Create ", (dialogInterface, i) -> {
                     String createName = editTextCreate.getText().toString();
-                    fireBaseFireStoreHelper.createProfileInFirebaseNew(MainActivity.this,createName,currentdate);
+                    fireBaseFireStoreHelper.createProfileInFirebaseNew(MainActivity.this,createName,currentDate);
                     startActivity(new Intent(MainActivity.this,MainActivity.class));
                 });
-                createDialog.setNegativeButton("Cancel",(dialogInterface, i) -> {
+                createDialog.setNeutralButton("Cancel",(dialogInterface, i) -> {
 
                 });
             createDialog.create().show();
@@ -140,25 +133,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        // if user is not login
-        else{
-            constraintLayout = findViewById(R.id.constraintLayout);
-            constraintLayout.setVisibility(View.VISIBLE);
-        }
-
-    }
-
-    public void LoginButtonClick(View view){
-        Intent intent = new Intent( MainActivity.this,LoginActivity.class);
-        startActivity(intent);
-    }
-    public void SignInButtonClick(View view){
-        Intent intent = new Intent( MainActivity.this,LoginActivity.class);
-        startActivity(intent);
-    }
-    public void ProfileNameView(View view){
-        Intent intent = new Intent( MainActivity.this,ProfilenameActivity.class);
-        startActivity(intent);
     }
 
 }

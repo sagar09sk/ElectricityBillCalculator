@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -25,6 +24,7 @@ public class BillByProfileActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     TextView textViewdetail;
+    TextView addNewButton;
     ImageView deleteView;
     ArrayList<String> dateList,currentList,amountList;
     CustomAdapterForBillhistory customAdapterForBillhistory;
@@ -38,15 +38,25 @@ public class BillByProfileActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String profileName = intent.getStringExtra("name");
         String userID = intent.getStringExtra("userID");
+        String date = intent.getStringExtra("date");
         recyclerView = findViewById(R.id.recyclerView);
         textViewdetail = findViewById(R.id.textViewdetail);
         textViewdetail.setText("Bill History of "+profileName.toUpperCase());
-        deleteView = findViewById(R.id.deleteView);
+        deleteView = findViewById(R.id.createProfileButton);
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        addNewButton = findViewById(R.id.addNewButton);
 
         dateList = new ArrayList<>();
         currentList = new ArrayList<>();
         amountList = new ArrayList<>();
+
+
+        addNewButton.setOnClickListener(v ->{
+            Intent intentAdd = new Intent(this,BillGenerateActivity.class);
+            intentAdd.putExtra("Name" ,profileName);
+            intentAdd.putExtra("Date",date);
+            startActivity(intentAdd);
+        });
 
         deleteView.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -69,8 +79,6 @@ public class BillByProfileActivity extends AppCompatActivity {
             builder.create().show();
 
         });
-
-
 
         customAdapterForBillhistory = new CustomAdapterForBillhistory(BillByProfileActivity.this,dateList,currentList,amountList);
         firebaseFirestore.collection("Profiles of "+userID ).document(profileName)

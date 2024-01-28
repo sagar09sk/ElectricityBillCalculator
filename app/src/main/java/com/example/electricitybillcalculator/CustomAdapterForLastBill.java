@@ -17,16 +17,17 @@ import java.util.ArrayList;
 public class CustomAdapterForLastBill extends RecyclerView.Adapter<CustomAdapterForLastBill.MyViewHolder> {
 
     private final Context context;
+    private final String userID;
     private final ArrayList<String> nameList;
     private final ArrayList<String> dateList;
     private final ArrayList<String> amountList ;
 
-    CustomAdapterForLastBill(Context context , ArrayList<String> nameList , ArrayList<String> dateList , ArrayList<String> amountList){
+    CustomAdapterForLastBill(Context context ,String userID, ArrayList<String> nameList , ArrayList<String> dateList , ArrayList<String> amountList){
         this.context = context;
+        this.userID = userID;
         this.nameList = nameList;
         this.dateList = dateList;
         this.amountList = amountList;
-
     }
 
     @NonNull
@@ -40,30 +41,22 @@ public class CustomAdapterForLastBill extends RecyclerView.Adapter<CustomAdapter
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.textViewName.setText("ID : "+nameList.get(position));
+        holder.textViewName.setText(nameList.get(position).toUpperCase());
         holder.textViewDate.setText(dateList.get(position));
         holder.textViewAmount.setText("Rs : "+amountList.get(position));
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             final String name = (String) nameList.get(position);
             final String date = (String) dateList.get(position);
-            final String amount = (String) amountList.get(position);
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle(" ID :  "+name);
-                builder.setMessage(" Date :  "+date+"\n Rs :  "+amount);
-                builder.setPositiveButton(" add new Bill ", (dialogInterface, i) -> {
-                    Intent intent = new Intent(context,BillGenerateActivity.class);
-                    intent.putExtra("Name" ,name);
-                    intent.putExtra("Date",date);
-                    context.startActivity(intent);
-                });
+                Intent intent = new Intent(context , BillByProfileActivity.class);
+                intent.putExtra("name", name);
+                intent.putExtra("userID" , userID);
+                intent.putExtra("date" , date);
+                context.startActivity(intent);
 
-                builder.setNeutralButton(" OK ", (dialogInterface, i) -> {
-                // back
-                });
-                builder.create().show();
+
             }
         });
 
