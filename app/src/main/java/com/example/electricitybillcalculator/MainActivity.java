@@ -1,6 +1,8 @@
 package com.example.electricitybillcalculator;
 
 import static android.content.ContentValues.TAG;
+import static android.text.InputType.TYPE_CLASS_TEXT;
+
 import androidx.appcompat.app.AppCompatActivity;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -115,9 +117,10 @@ public class MainActivity extends AppCompatActivity {
             createProfileButton = findViewById(R.id.createProfileButton);
             createProfileButton.setOnClickListener(view -> {
                 EditText editTextCreate = new EditText(view.getContext());
+                editTextCreate.setInputType(TYPE_CLASS_TEXT);
                 AlertDialog.Builder createDialog = new AlertDialog.Builder(view.getContext());
                 createDialog.setTitle(" Enter Profile Name ");
-                createDialog.setMessage(" profile Name must be Unique ");
+                createDialog.setMessage(" Profile Name must be Unique ");
                 createDialog.setView(editTextCreate);
                 createDialog.setPositiveButton(" Create ", (dialogInterface, i) -> {
                     String createName = editTextCreate.getText().toString();
@@ -125,9 +128,9 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this,MainActivity.class));
                 });
                 createDialog.setNeutralButton("Cancel",(dialogInterface, i) -> {
-
+                    //cancel
                 });
-            createDialog.create().show();
+                createDialog.create().show();
             });
 
 

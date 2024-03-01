@@ -1,36 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BillByProfileActivity">
 
-    <TextView
-        android:id="@+id/textViewdetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="7dp"
-        android:fontFamily="@font/aclonica"
-        android:text="Bill History of Name"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/addNewButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="7dp"
-        android:background="@drawable/custom_add_bill_textview"
-        android:fontFamily="@font/aclonica"
-        android:padding="7dp"
-        android:text="Add New Bill"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewdetail" />
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/custom_toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -48,13 +27,11 @@
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginHorizontal="20dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addNewButton">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
         <TextView
             android:id="@+id/dateTextView4"
@@ -85,15 +62,5 @@
             android:textSize="20sp" />
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/createProfileButton"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="9dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textViewdetail"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/delete_document" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
